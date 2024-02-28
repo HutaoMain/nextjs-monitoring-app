@@ -18,14 +18,6 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ message: "New Job created!" }, { status: 201 });
 }
 
-// GET LIST METHOD
-// NEXTAUT_URL/api/jobs
-// export async function GET() {
-//   await connectMongoDb();
-//   const jobs = await Jobs.find();
-//   return NextResponse.json(jobs);
-// }
-
 export async function GET(req: NextRequest) {
   try {
     const status = req.nextUrl.searchParams.get("status");

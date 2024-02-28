@@ -1,11 +1,12 @@
 "use client";
 
 import { GitHub } from "@mui/icons-material";
-import { signIn } from "next-auth/react";
+// import { signIn } from "next-auth/react";
 
 export default function GithubSignInButton() {
   const handleClick = () => {
-    signIn("github");
+    // signIn("github");
+    console.log("github");
   };
 
   return (

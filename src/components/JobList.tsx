@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import JobCard from "./JobCard";
 import { IJob } from "@/interface/Interfaces";
+import { useSession } from "next-auth/react";
 
 interface Board {
   id: string;
@@ -16,7 +17,8 @@ interface OrganizedJobs {
 
 export default function JobList() {
   const [jobs, setJobs] = useState<OrganizedJobs>({});
-  const email = "alimohamedalcantara@gmail.com";
+
+  const { data: sessionData } = useSession();
 
   const boards: Board[] = [
     { id: "wishlist", title: "WISHLIST" },
@@ -50,10 +52,13 @@ export default function JobList() {
   const getJobsByStatusAndEmail = async (status: string): Promise<IJob[]> => {
     console.log(process.env.NEXTAUTH_URL);
     try {
-      const res = await fetch(`/api/jobs?status=${status}&email=${email}`, {
-        cache: "no-store",
-        method: "GET",
-      });
+      const res = await fetch(
+        `/api/jobs?status=${status}&email=${sessionData?.user?.email}`,
+        {
+          cache: "no-store",
+          method: "GET",
+        }
+      );
 
       if (!res.ok) {
         throw new Error("Failed to fetch data");
