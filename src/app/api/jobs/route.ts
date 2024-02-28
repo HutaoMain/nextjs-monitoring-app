@@ -1,14 +1,19 @@
+import { authConfig } from "@/lib/auth";
 import { connectMongoDb } from "@/lib/mongodb";
 import Jobs from "@/models/JobModel";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 // POST METHOD
+// /api/job
 export async function POST(req: NextRequest) {
-  const { email, jobName, companyName, jobDescription, askingSalary, status } =
+  const session = await getServerSession(authConfig);
+
+  const { jobName, companyName, jobDescription, askingSalary, status } =
     await req.json();
   await connectMongoDb();
   await Jobs.create({
-    email,
+    email: session?.user?.email,
     jobName,
     companyName,
     jobDescription,
@@ -21,12 +26,12 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const status = req.nextUrl.searchParams.get("status");
-    const email = req.nextUrl.searchParams.get("email");
+    const session = await getServerSession(authConfig);
 
     console.log("status: ", status);
-    console.log("email: ", email);
+    console.log("email: ", session?.user?.email);
 
-    if (!status || !email) {
+    if (!status || !session?.user?.email) {
       return NextResponse.json(
         { message: "Invalid request parameters" },
         { status: 400 }
@@ -34,7 +39,7 @@ export async function GET(req: NextRequest) {
     }
 
     await connectMongoDb();
-    const jobs = await Jobs.find({ status, email });
+    const jobs = await Jobs.find({ status, email: session?.user?.email });
     return NextResponse.json(jobs);
   } catch (error) {
     console.error("Error fetching jobs:", error);

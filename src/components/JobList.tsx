@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import JobCard from "./JobCard";
 import { IJob } from "@/interface/Interfaces";
-import { useSession } from "next-auth/react";
+import { Button, Dialog } from "@mui/material";
+import AddJob from "./AddJob";
 
 interface Board {
   id: string;
@@ -17,8 +18,7 @@ interface OrganizedJobs {
 
 export default function JobList() {
   const [jobs, setJobs] = useState<OrganizedJobs>({});
-
-  const { data: sessionData } = useSession();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const boards: Board[] = [
     { id: "wishlist", title: "WISHLIST" },
@@ -50,15 +50,11 @@ export default function JobList() {
   };
 
   const getJobsByStatusAndEmail = async (status: string): Promise<IJob[]> => {
-    console.log(process.env.NEXTAUTH_URL);
     try {
-      const res = await fetch(
-        `/api/jobs?status=${status}&email=${sessionData?.user?.email}`,
-        {
-          cache: "no-store",
-          method: "GET",
-        }
-      );
+      const res = await fetch(`/api/jobs?status=${status}`, {
+        cache: "no-store",
+        method: "GET",
+      });
 
       if (!res.ok) {
         throw new Error("Failed to fetch data");
@@ -128,36 +124,52 @@ export default function JobList() {
   }, []);
 
   return (
-    <DragDropContext onDragEnd={handleDrop}>
-      <div className="w-full flex items-start justify-center pt-20 p-2.5">
-        {boards.map((board) => (
-          <Droppable key={board.id} droppableId={board.id}>
-            {(provided, snapshot) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className={`w-[280px] h-[calc(100vh_-_150px)] bg-[#c2c9cf] 
+    <>
+      <DragDropContext onDragEnd={handleDrop}>
+        <div className="pt-[70px]">
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="w-[200px] 
+      bg-[#afd274] 
+      text-black font-[bold] cursor-pointer 
+      ml-[210px] mt-[5px] p-2.5 rounded-[10px] border-[none] mb-2"
+          >
+            Add Job
+          </Button>
+          <div className="flex items-start justify-center p-2.5">
+            {boards.map((board) => (
+              <Droppable key={board.id} droppableId={board.id}>
+                {(provided, snapshot) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className={`w-[280px] h-[calc(100vh_-_212px)] bg-[#c2c9cf] 
                 mr-5 p-2.5 rounded-[5px] ${
                   snapshot.isDraggingOver ? "bg-green-100" : ""
                 }`}
-              >
-                <div className="border-b-2 border-black pb-4">
-                  <h2 className="text-lg m-0 font-bold">{board.title}</h2>
-                  <span className="text-md">
-                    {jobs[board.id]?.length || 0} Job/s
-                  </span>
-                </div>
-                <div className="h-[85%] overflow-y-scroll p-2.5 no-scrollbar">
-                  {jobs[board.id]?.map((job, index) => (
-                    <JobCard data={job} index={index} key={index} />
-                  ))}
-                </div>
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        ))}
-      </div>
-    </DragDropContext>
+                  >
+                    <div className="border-b-2 border-black pb-4">
+                      <h2 className="text-lg m-0 font-bold">{board.title}</h2>
+                      <span className="text-md">
+                        {jobs[board.id]?.length || 0} Job/s
+                      </span>
+                    </div>
+                    <div className="h-[85%] overflow-y-scroll p-2.5 no-scrollbar">
+                      {jobs[board.id]?.map((job, index) => (
+                        <JobCard data={job} index={index} key={index} />
+                      ))}
+                    </div>
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            ))}
+          </div>
+        </div>
+      </DragDropContext>
+      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <AddJob closeModal={() => setIsModalOpen(false)} />
+      </Dialog>
+    </>
   );
 }
