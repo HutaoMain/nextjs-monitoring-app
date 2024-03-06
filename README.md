@@ -21,7 +21,10 @@
 ## View Job
 
 ![View Job](https://res.cloudinary.com/alialcantara/image/upload/v1709137484/view.jpg)
-![View Job](https://res.cloudinary.com/alialcantara/image/upload/v1709710573/job-application-mobile-1.png)
+
+## Mobile View
+
+<div style="text-align:center"><img src="https://res.cloudinary.com/alialcantara/image/upload/v1709710573/job-application-mobile-1.png" /></div>
 
 - View the list of jobs that have been added to the monitoring app.
 
