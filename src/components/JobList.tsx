@@ -127,15 +127,17 @@ export default function JobList() {
     <>
       <DragDropContext onDragEnd={handleDrop}>
         <div className="md:block pt-[70px] w-full flex items-center flex-col">
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            className="w-[95%] bg-[#afd274] 
-      text-black font-[bold] cursor-pointer 
-      mt-[5px] p-2.5 rounded-[10px] border-[none] mb-2 md:w-[200px] md:ml-[210px] "
-          >
-            Add Job
-          </Button>
-          <div className="w-full flex py-2.5 pl-3 overflow-x-scroll md:overflow-x-hidden md:justify-center">
+          <div className="w-full md:max-w-[1490px] md:mx-auto pl-[20px]">
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              className="w-[95%] bg-[#afd274] 
+            text-black font-[bold] cursor-pointer 
+            mt-[5px] p-2.5 rounded-[10px] border-[none] mb-2 md:w-[200px]"
+            >
+              Add Job
+            </Button>
+          </div>
+          <div className="w-full flex py-2.5 pl-3 overflow-x-scroll 2xl:overflow-x-hidden 2xl:justify-center">
             {boards.map((board) => (
               <Droppable key={board.id} droppableId={board.id}>
                 {(provided, snapshot) => (
