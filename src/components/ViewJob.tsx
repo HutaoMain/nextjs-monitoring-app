@@ -1,6 +1,6 @@
 "use client";
 
-import { IJob } from "@/interface/Interfaces";
+import { IJob } from "@/types/Interfaces";
 import { Business } from "@mui/icons-material";
 import moment from "moment";
 

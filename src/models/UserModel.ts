@@ -10,7 +10,11 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    pictureUrl: {
+    image: {
+      type: String,
+      required: true,
+    },
+    authProvider: {
       type: String,
       required: true,
     },

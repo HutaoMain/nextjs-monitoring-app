@@ -13,7 +13,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="h-[100vh] w-[100vw]">
+    <main className="h-full w-[100vw]">
       <Navbar />
       <JobList />
       <Footer />

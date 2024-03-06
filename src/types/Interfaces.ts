@@ -8,3 +8,12 @@ export interface IJob {
   status: string;
   createdAt: string;
 }
+
+export interface IUser {
+  email: string;
+  email_verified: boolean;
+  name: string;
+  pciture: string;
+  given_name: string;
+  family_name: string;
+}

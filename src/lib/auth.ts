@@ -17,24 +17,36 @@ export const authConfig: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ account, profile }) {
-      await connectMongoDb();
-      if (account?.provider === "google") {
-        const googleAuthData = {
-          name: profile?.name,
-          email: profile?.email,
-          image: profile?.image,
-          authProvider: "google",
-        };
-        const exist = await Users.findOne({
-          email: profile?.email,
-        });
+      try {
+        await connectMongoDb();
 
-        if (exist) {
-          const result = await Users.create(googleAuthData);
-          console.log(result);
+        if (account?.provider === "google") {
+          const googleAuthData = {
+            email: profile?.email,
+            name: profile?.name,
+            image: profile?.picture,
+            authProvider: "google",
+          };
+
+          console.log("profile: ", profile);
+
+          const existingUser = await Users.findOne({ email: profile?.email });
+
+          console.log("existingUser: ", existingUser);
+
+          if (!existingUser) {
+            const result = await Users.create(googleAuthData);
+            console.log("result: ", result);
+          } else {
+            console.log("User already exists");
+          }
         }
+
+        return true;
+      } catch (error) {
+        console.error("Error during sign-in:", error);
+        return false;
       }
-      return true;
     },
   },
 };

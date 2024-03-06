@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { IJob } from "@/interface/Interfaces";
+import { IJob } from "@/types/Interfaces";
 import moment from "moment";
 import { Business } from "@mui/icons-material";
 import { Dialog, DialogContent } from "@mui/material";
@@ -28,7 +28,7 @@ export default function JobCard({ data, index }: Props) {
             className="border-[#e7717d] bg-[#f4f5f7] shadow-[0_2px_4px_rgba(0,0,0,0.1)] 
           transition-shadow duration-[0.3s] ease-[ease-in-out] cursor-move 
           flex justify-center flex-col gap-1
-          mt-2.5 pl-2.5 pt-2.5 rounded-[5px] border-2 border-solid 
+          mt-2.5 pl-2.5 pt-2.5 rounded-[5px] border-2 border-solid w-[240px]
           hover:shadow-[0_4px_8px_rgba(0,0,0,0.2)]"
           >
             <h4 className="text-sm m-0 font-[700]">{data.jobName}</h4>
