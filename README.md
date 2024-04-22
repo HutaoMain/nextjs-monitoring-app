@@ -26,7 +26,7 @@
 
 <div style="text-align:center"><img src="https://res.cloudinary.com/alialcantara/image/upload/v1709710573/job-application-mobile-1.png" /></div>
 
-- View the list of jobs that have been added to the monitoring app.
+- View the list of jobs that have been added to the monitoring app. You can slide the board from left to right, enables you to see the other cards.
 
 ## Drag and Drop Jobs
 
